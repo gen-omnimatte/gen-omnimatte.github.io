@@ -353,10 +353,10 @@ p {
     margin-left: 8%;
     margin-right: 8%;
   }
-  iframe {
+  /* iframe {
     width: 90%;
     height: calc(0.7 * 60vw);
-  }
+  } */
   #div-row-ablation-condition {
     margin-left: 0%;
     margin-right: 0%;
@@ -385,10 +385,10 @@ p {
 
 /* Medium devices (tablets, 768px and up)*/
 @media screen and (min-width: 769px) {
-  iframe {
+  /* iframe {
     width: 100%;
-    height: calc(0.4 * 60vw);
-  }
+    height: calc(0.5 * 100vw);
+  } */
 
   #div-traindata-text-container {
     height: 200px;
@@ -413,3 +413,10 @@ p {
     margin-left: 10%;
   }
 }
+
+/* @media screen and (min-width: 1440px) {
+  iframe {
+    width: 100%;
+    height: calc(0.5 * 40vw);
+  }
+} */

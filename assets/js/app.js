@@ -257,6 +257,14 @@ $(document).ready(function () {
     // $(".navbar-menu").toggleClass("is-active");
 
     // });
+    var frame = document.getElementById('div-container-embed-video');
+    frame.onload = function() {
+        width = Number($(frame).css('width').replace('px', ''));
+        height = width * 0.56
+        frame.style.height = String(height) + 'px';
+        console.log($(frame).css('height'));
+    };
+
 });
 
 
