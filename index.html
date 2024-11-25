@@ -10,10 +10,10 @@
 
     gtag('config', 'G-X8M7T669YV');
   </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
   <meta name="description"
         content="Generative Omnimatte">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Generative Omnimatte: Learning to Decompose Video into Layers</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
@@ -55,7 +55,7 @@
         <div class="column has-text-centered">
           <h1 class="title is-1 publication-title" style="font-size: 32pt;"><span style="font-weight: bolder;">Generative Omnimatte</span>
             <br><span style="font-weight:normal">Learning to Decompose Video into Layers</span></h1>
-          <div class="is-size-5 publication-authors" style="margin-left: -10%; margin-right: -10%;">
+          <div class="is-size-5 publication-authors" id="div-row-authors">
 			      <span class="author-block">
               <a href="https://yaochih.github.io/">Yao-Chih Lee</a><sup>1,2</sup>&nbsp&nbsp</span>
             <span class="author-block">
@@ -158,7 +158,7 @@
               </script>
               <div class="has-text-centered text-center">
                   <div class="video-container" style="padding: 0;">
-                      <video class="video" style="height: 520px; max-width: 100%;" m id="demoVideo0" loop playsinline autoplay muted>
+                      <video class="video" style="max-width: 100%;" m id="demoVideo0" loop playsinline autoplay muted>
                           <source src="assets/videos/layers/boys-beach_animation_pause-occlusion_zoomed.mp4" />
                       </video>
                   </div>
@@ -171,7 +171,7 @@
                       </div>
                   </div>
                   <div class="column" >
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label" id=""></div>
                       <div class="column has-text-centered method-label">
                         Input video
@@ -184,7 +184,7 @@
                       <div class="column has-text-centered method-label" id=""></div>
                     </div>
                     <br>
-                    <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px;">
+                    <h2 class="title has-text-centered is-size-5 " style="font-weight: 400; line-height: 32px;">
                       Our method decomposes a video into a set of RGBA omnimatte layers,<br>where each layer consists of a fully-visible object and its associated effects like shadows and reflections.
                     </h2>
               </div>
@@ -242,7 +242,7 @@
 </section>
 
 
-<section id='sec:edit' class="hero is-light is-small">
+<section id='sec-edit' class="hero is-light is-small">
   <div class="hero-body">
     
     <div class="container">
@@ -357,7 +357,7 @@
   </div>
 </section>
 
-<section id='sec:sidebyside-edit' class="hero is-light is-small">
+<section id='sec-sidebyside-edit' class="hero is-light is-small">
   <div class="hero-body">
     
     <div class="container"  style="padding-left: 5%; padding-right: 5%;">
@@ -477,9 +477,9 @@
 
 <section class="section" id="sec:youtube-embed">
   <div class="container is-max-desktop">
-    <div class="columns is-centered">
+    <div class="columns is-centered has-text-centered">
       <div class="column">
-        <iframe width="960" height="540"
+        <iframe
           src="https://www.youtube.com/embed/SD-VCNvTBg4">
         </iframe>
       </div>
@@ -609,8 +609,8 @@
                     <source src="assets/videos/comparisons_omnimatte/boat-bg-row.mp4" />
                   </video>
                   
-                  <div class="column method-labels">
-                    <div class="columns ">
+                  <div class="column">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered  method-label">
                           Input
                       </div>
@@ -643,7 +643,7 @@
           <div class="col-2"></div>
           
       </div>
-      <div class="has-text-justified">
+      <div class="has-text-justified text-description">
         <p>
           We compare our method with existing omnimatte methods (<a href="https://omnimatte.github.io">Omnimatte</a>, <a href="https://openaccess.thecvf.com/content/CVPR2023/papers/Suhail_Omnimatte3D_Associating_Objects_and_Their_Effects_in_Unconstrained_Monocular_Video_CVPR_2023_paper.pdf">Omnimatte3D</a>, <a href="https://omnimatte-rf.github.io/">OmnimatteRF</a>, and <a href="https://factormatte.github.io/">FactorMatte</a>).
           Existing methods rely on restrictive motion assumptions, such as stationary background, resulting in dynamic background elements becoming entangled with foreground object layers.
@@ -739,7 +739,7 @@
                       <source src="assets/videos/comparisons-removal/cartoon-row.mp4" />
                   </video>
                   <div class="column">
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label">
                         Input & object to remove
                       </div>
@@ -770,7 +770,7 @@
           <div class="col-2"></div>
       </div>
     </div>
-    <div class="has-text-justified">
+    <div class="has-text-justified  text-description">
       <p>
         We compare our object-effect-removal model, Casper, with existing methods for object removal.
         Video inpainting models (<a href="https://shangchenzhou.com/projects/ProPainter/">ProPainter</a> and <a href="https://lumiere-video.github.io/">Lumiere-Inpainting</a>) fail to remove soft shadows and reflections outside the input masks.
@@ -790,7 +790,7 @@
     
     <div class="container-fluid">
       <h2 class="title has-text-centered is-3">Method</h2>
-      <div class="has-text-justified">
+      <div class="has-text-justified  text-description">
         <p>Given an input video and binary object masks, we first apply our object-effect-removal
           model, Casper, to generate a clean-plate background and a set of single-object (solo) videos applying different trimask conditions.
           The trimasks specify regions to preserve (white), remove (black), and regions that potentially contain uncertain object effects (gray). In
@@ -863,7 +863,7 @@
                 <source src="assets/videos/trimask/three-women_resized.mp4" />
             </video>
             <div class="column">
-              <div class="columns">
+              <div class="columns method-labels">
                 <div class="column has-text-centered method-label">
                   Input
                 </div>
@@ -1002,7 +1002,7 @@
             </div>
           </div>
           <div class="video-container">
-              <video class="video" style="width: 80%; padding-right: 80px;" id="traindataVideo0" loop playsinline autoplay muted controls>
+              <video class="video" id="traindataVideo0" loop playsinline autoplay muted controls>
                   <source src="assets/videos/train_data/omnimatte.mp4" />
               </video>
               <div class="column">
@@ -1020,8 +1020,8 @@
         </div>
         <!--END TRAINING DATA-->
       </div>
-      <div class="has-text-justified" style="height: 200px;">
-        <p id="p-traindata-desc" class="has-text-justified">
+      <div class="has-text-justified" id="div-traindata-text-container">
+        <p id="p-traindata-desc" class="has-text-justified  text-description">
           <!-- We curate a training dataset of real and synthetic video examples from the following four categories: -->
           <!-- <br><br> -->
           
@@ -1111,7 +1111,7 @@
                       <source src="assets/videos/ablation_data/puppy-walk-fg=01_highlight_with-mask_mask-dilated.mp4" />
                   </video>
                   <div class="column">
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label">
                           Input
                       </div>
@@ -1143,7 +1143,7 @@
           
           <!-- <div class="col-2"></div> -->
       </div>
-      <div class="has-text-justified">
+      <div class="has-text-justified  text-description ">
         <p>
           We assess the individual contributions of each dataset category to our model's performance by incrementally adding each category to the training set.
           While the Omnimatte data provides basic examples of shadows in real-world videos, it primarily features static backgrounds and single objects.
@@ -1168,7 +1168,7 @@
       <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
       </h2>
       
-      <div class="row py-5 mt-5 bg-dark" style="margin-left: -12.5%; margin-right: -12.5%;">
+      <div class="row py-5 mt-5 bg-dark" id="div-row-ablation-condition">
           <!-- <div class="col-2"></div> -->
           <!-- <div class="col-md-8"> -->
           <div>
@@ -1214,7 +1214,7 @@
                       <source src="assets/videos/ablation_condition/factormatte-puddle-fg=-1_highlight_mask-dilated.mp4" />
                   </video>
                   <div class="column">
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label">
                           Input
                       </div>
@@ -1239,7 +1239,7 @@
           </div>
           <!-- <div class="col-2"></div> -->
       </div>
-      <div class="has-text-justified">
+      <div class="has-text-justified  text-description">
         <p>
           Our proposed trimask explicitly defines the regions to be removed or preserved, thereby enabling more accurate handling of multi-object scenarios.
           In contrast, the model trained on binary masks is susceptible to ambiguity, potentially leading to undesired removal of objects meant to be preserved.
@@ -1312,7 +1312,7 @@
                       <source src="assets/videos/failures/trampoline.mp4" />
                   </video>
                   <div class="column">
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label">
                         Input
                       </div>
@@ -1334,7 +1334,7 @@
           </div>
           <div class="col-2"></div>
       </div>
-      <div class="has-text-justified">
+      <div class="has-text-justified  text-description">
         <p id="p-failure-desc">
           While our method addresses the limitations of existing approaches, it still has certain limitations.
           <br>
@@ -1365,7 +1365,7 @@
     <div class="columns is-centered has-text-centered ">
       <div class="column">
         <h2 class="title is-3">User-specified trimask</h2>
-        <div class="has-text-justified">
+        <div class="has-text-justified  text-description">
           <p>
             We observe some cases where Casper will associate unrelated dynamic background effects with a foreground layer, such as the waves in the below example.
             To mitigate this, our system allows the user to modify the trimask by specifying a coarse preservation region to preserve the background waves better.
@@ -1373,17 +1373,17 @@
         </div>
         <div class="row py-5 mt-5 bg-dark">
           <div class="col-2"></div>
-          <div class="col-md-8" id="div-userspecified-overview" style="height: 400px;">
-            <video class="video" style="max-width: 100%; padding-right: 0px; height: 400px;" id="userspecifiedVideo" loop playsinline autoplay muted>
+          <div class="col-md-8 container-video-user-specified-trimask" id="div-userspecified-overview">
+            <video class="video" style="max-width: 100%; padding-right: 0px;" id="userspecifiedVideo" loop playsinline autoplay muted>
               <source src="assets/videos/user-specified/overview2.mp4" />
             </video>
           </div>
-          <div class="col-md-8" id="div-userspecified-zoom" style="height: 400px; display: none;">
+          <div class="col-md-8 container-video-user-specified-trimask" id="div-userspecified-zoom" style="display: none;">
             <video class="video" style="width: 80%;" id="userspecifiedZoomedVideo" loop playsinline autoplay muted>
               <source src="assets/videos/user-specified/zoomed.mp4" />
             </video>
             <div class="column">
-              <div class="columns" style="width: 80%; margin-left:10%;">
+              <div class="columns method-labels" id="div-labels-user-specified-zoomed">
                 <div class="column has-text-centered method-label" style=" margin-left: 5px; margin-right: 5px;">
                   Input
                 </div>
@@ -1491,7 +1491,7 @@
                       <source src="assets/videos/self-attn-analysis/boys-beach_fg01_block=00.mp4" />
                   </video>
                   <div class="column">
-                    <div class="columns">
+                    <div class="columns method-labels">
                       <div class="column has-text-centered method-label">
                         Input & target object <br> for visualization metric
                       </div>
@@ -1519,7 +1519,7 @@
           <div class="col-2"></div>
       </div>
       <br>
-      <div class="has-text-justified">
+      <div class="has-text-justified  text-description">
         <p>
           To investigate the inherent understanding of object-effect associations in the text-to-video (T2V) Lumiere generation model,
           we analyze its self-attention patterns during the denoising process using SDEdit.

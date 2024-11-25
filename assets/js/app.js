@@ -148,7 +148,7 @@ function reload_carousel_videos() {
 function configure_carousel() {
     var options_show3 = {
             slidesToScroll: 1,
-            slidesToShow: 3,
+            slidesToShow: 1,
             loop: true,
             infinite: true,
             autoplay: false,
