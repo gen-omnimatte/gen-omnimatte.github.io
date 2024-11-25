@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8M7T669YV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-X8M7T669YV');
+  </script>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Generative Omnimatte">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generative Omnimatte: Learning to Decompose Video into Layers</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./assets/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./assets/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <!-- <link rel="stylesheet" href="./assets/css/app.css"> -->
+  <!-- <link rel="icon" href="./assets/images/favicon.svg"> -->
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./assets/js/fontawesome.all.min.js"></script>
+  <script src="./assets/js/bulma-carousel.min.js"></script>
+  <script src="./assets/js/bulma-slider.min.js"></script>
+  <script src="./assets/js/app.js"></script>
+  <script src="./assets/js/synced_video_selector.js"></script>
+</head>
+<body onresize="reload();">
+
+<section class="hero">
+  <div class="hero-body" style="padding-bottom: 0;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title" style="font-size: 32pt;"><span style="font-weight: bolder;">Generative Omnimatte</span>
+            <br><span style="font-weight:normal">Learning to Decompose Video into Layers</span></h1>
+          <div class="is-size-5 publication-authors" style="margin-left: -10%; margin-right: -10%;">
+			      <span class="author-block">
+              <a href="https://yaochih.github.io/">Yao-Chih Lee</a><sup>1,2</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+              <a href="https://erikalu.com/">Erika Lu</a><sup>1</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=gPkCTQ0AAAAJ&hl=en">Sarah Rumbley</a><sup>1</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+              <a href="https://michalgeyer.my.canva.site/">Michal Geyer</a><sup>1,3</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+              <a href="https://jbhuang0604.github.io/">Jia-Bin Huang</a><sup>2</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+              <a href="https://www.weizmann.ac.il/math/dekel/home">Tali Dekel</a><sup>1,3</sup>&nbsp&nbsp</span>
+            <span class="author-block">
+                <a href="https://people.csail.mit.edu/fcole/">Forrester Cole</a><sup>1</sup>&nbsp&nbsp</span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Google DeepMind &nbsp&nbsp </span>
+            <span class="author-block"><sup>2</sup>University of Maryland College Park &nbsp&nbsp </span>
+            <span class="author-block"><sup>3</sup>Weizmann Institute of Science</span>
+          </div>
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block"></span>
+                <!-- <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>PDF</span>
+                </a> -->
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <!-- <i class="fa-brands fa-youtube"></i> -->
+                    <svg class="svg-inline--fa fa-youtube fa-w-18" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="youtube" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"></path></svg>
+                  </span>
+                  <span>Video</span>
+                </a>
+                <a href="#BibTeX"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fa fa-book"></i>
+                  </span>
+                  <span>BibTex</span>
+                </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section" id="abstract">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column">
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- <nav class="section-nav">
+  <ul>
+    <li class=""><a href="#sec:demo">Generative Omnimatte</a></li>
+    <li class=""><a href="#sec:comparison-omnimatte">Comparison: Omnimatte</a></li>
+    <li class=""><a href="#sec:comparison-removal">Comparison: Removal</a></li>
+    <li class=""><a href="#sec:method">Our Method</a></li>
+    <li class=""><a href="#sec:ablation-data">Ablation: Training Data</a></li>
+    <li class=""><a href="#sec:ablation-condition">Ablation: Input Condition</a></li>
+    <li class=""><a href="#sec:attention-analysis">Self-Attention Analysis</a></li>
+  </ul>
+</nav> -->
+
+<section id='sec:demo' class="hero is-small">
+  <div class="container" > 
+    
+    <div class="container-fluid">
+      <!-- <h2 class="title has-text-centered is-3">Demo</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+        Demo
+      </h2> -->
+      <div class="row py-5 mt-5 bg-dark" style="margin-top: 0; padding-top: 0;">
+          <div class="col-2"></div>
+          <div class="col-md-8">
+              <script>
+                  activeDemoMethodPill = "zipnerf"
+                  activeDemoScenePill = document.querySelector('.demo-scene-pill.active-pill');
+                  activeDemoModePill = document.querySelector('.demo-mode-pill.active-pill');
+              </script>
+              <div class="has-text-centered text-center">
+                  <div class="video-container">
+                      <video class="video" style="height: 520px; max-width: 100%;" m id="demoVideo0" loop playsinline autoplay muted>
+                          <source src="assets/videos/layers/boys-beach_animation_pause-occlusion_zoomed.mp4" />
+                      </video>
+                  </div>
+                  <div class="text-center" style="color: black; display: none;" id="demo-mode-pills">
+                      <div class="btn-group btn-group-sm">
+                          <span class="button is-normal demo-mode-pill active" data-value="layer"
+                              onclick="selectDemoVideo(activeDemoMethodPill, activeDemoScenePill, this)">
+                              Layer Visualization
+                          </span>
+                      </div>
+                  </div>
+
+
+                  <br>
+                  <script>
+                      video0 = document.getElementById("demoVideo0");
+                  </script>
+
+                  <div class="pill-row scene-pills" id="demo-scene-pills">
+                    <span class="pill demo-scene-pill active" data-value="lego_animation_pause-occlusion" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                        <img class="thumbnail-img" src="assets/thumbnails/lego.png" alt="lego" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="boys-beach_animation_pause-occlusion_zoomed" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/boys-beach.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="six-penguins_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/six-penguins.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="sand-draw_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/sand-draw.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="cartoon_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/cartoon.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="pickup-desert_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/pickup-desert.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="two-skaters_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/two-skaters.png" alt="" width="64">
+                    </span>
+                    <span class="pill demo-scene-pill" data-value="ice-skating_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/ice-skating.png" alt="" width="64">
+                    </span>
+                    <!-- <span class="pill demo-scene-pill" data-value="people-jumping_animation" onclick="selectDemoVideo(activeDemoMethodPill, this, activeDemoModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/people-jumping.png" alt="" width="96">
+                    </span> -->
+                    
+                  </div>
+                  <br/>
+                  
+                  <script>
+                      activeDemoMethodPill = document.querySelector('.demo-method-pill.active-pill');
+                      activeDemoScenePill = document.querySelector('.demo-scene-pill.active-pill');
+                      activeDemoModePill = document.querySelector('.demo-mode-pill.active-pill');
+                  </script>
+              </div>
+          </div>
+          <div class="col-2"></div>
+          <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px;">
+            Our method decomposes a video into a set of RGBA omnimatte layers,<br>where each layer consists of a fully-visible object and its associated effects like shadows and reflections.
+          </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id='sec:edit' class="hero is-light is-small">
+  <div class="hero-body">
+    
+    <div class="container">
+      <!-- <h2 class="has-text-centered title">
+          <b>Video editing</b>
+      </h2> -->
+      <div id="demo-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/sand-draw_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/lego_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/six-penguins_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/cartoon_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/ice-skating_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/omnimatte-writing_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/pickup-desert_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/two-skaters_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/delivery_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/toy-plane_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <!-- <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/boys-beach_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div> -->
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/people-jumping_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/chess_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <!-- <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/stringed-puppet_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div> -->
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/piano-hands_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/teach-riding-bike_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+      </div>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px; font-style: italic; padding-top: 20px;">
+        Our omnimattes enable a wide range of video editing for users.
+        (Scroll to view more videos)
+      </h2>
+    </div>
+  </div>
+</section>
+
+<br>
+<br>
+<br>
+<br>
+<section id='sec:comparison-omnimatte' class="hero is-small" style="background-color: #ffffff;">
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Comparisons on Omnimattes</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+      </h2>
+      
+      <div class="row py-5 mt-5 bg-dark" id="div-video-comp-omni" style="width: 90vw; margin-left: calc(-45vw + 50%)">
+          <div class="col-2"></div>
+          <div class="col-md-8">
+              <script>
+                  activeCompMethodPill = document.querySelector('.comp-method-pill.active-pill');
+                  activeCompScenePill = document.querySelector('.comp-scene-pill.active-pill');
+                  activeCompModePill = document.querySelector('.comp-mode-pill.active-pill');
+              </script>
+              <div class="has-text-centered text-center">
+                <div class="pill-row scene-pills">
+                  <span class="pill comp-scene-pill" data-value="boys-beach" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/boys-beach.png" width="64">
+                  </span>
+                  <span class="pill comp-scene-pill" data-value="boat" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                      <img class="thumbnail-img" src="assets/thumbnails/boat.png" width="64">
+                  </span>
+                  <span class="pill comp-scene-pill active" data-value="two-horses" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)" id="btn-comp-omnimatte-horses">
+                    <img class="thumbnail-img" src="assets/thumbnails/two-horses.png" width="64">
+                  </span> 
+                  <span class="pill comp-scene-pill" data-value="kite-walk" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/kite-walk.png" width="64">
+                  </span>
+                  
+                  <span class="pill comp-scene-pill" data-value="goat" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/goat.png" width="64">
+                  </span>
+                  
+                  <span class="pill comp-scene-pill" data-value="factormatte-sandcar" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/factormatte-sandcar.png" width="64">
+                  </span>
+                  <span class="pill comp-scene-pill" data-value="factormatte-puddle" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/factormatte-puddle.png" width="64">
+                  </span>
+                  <span class="pill comp-scene-pill" data-value="omnimatte-rf-walk" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/omnimatte-rf-walk.png" width="64">
+                  </span>
+                  <!-- <span class="pill comp-scene-pill" data-value="eval-donkey" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-donkey.png" width="64">
+                  </span> -->
+                  <span class="pill comp-scene-pill" data-value="eval-dog" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-dog.png" width="64">
+                  </span>
+                  <span class="pill comp-scene-pill" data-value="eval-cars" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-cars.png" width="64">
+                  </span>
+                  <!-- <span class="pill comp-scene-pill" data-value="eval-bag" onclick="selectCompVideo(activeCompMethodPill, this, activeCompModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-bag.png" width="64">
+                  </span> -->
+                  <br/>
+                </div>
+                <div class="text-center" style="color: black; display: none;" id="comp-method-pills">
+                  <div class="btn-group btn-group-sm">
+                      <span class="button is-normal comp-method-pill" data-value="omnimatte" label="Omnimatte [Lu et al. 2021]" id="btn-omnimatte"
+                          onclick="selectCompVideo(this, activeCompScenePill, activeCompModePill)">
+                          Omnimatte
+                      </span>
+                      <span class="button is-normal comp-method-pill" data-value="omnimatte3d" label="Omnimatte3D [Suhail et al. 2023]" id="btn-omnimatte3d"
+                          onclick="selectCompVideo(this, activeCompScenePill, activeCompModePill)">
+                          Omnimatte3D
+                      </span>
+                      <span class="button is-normal comp-method-pill active" data-value="omnimatte_rf" label="OmnimatteRF [Lin et al. 2023]" id="btn-omnimatterf"
+                          onclick="selectCompVideo(this, activeCompScenePill, activeCompModePill)">
+                          OmnimatteRF
+                      </span>
+                      <span class="button is-normal comp-method-pill" data-value="factormatte" label="FactorMatte [Gu et al. 2023]" id="btn-factormatte"
+                          onclick="selectCompVideo(this, activeCompScenePill, activeCompModePill)">
+                          FactorMatte
+                      </span>
+                  </div>
+              </div>
+              <br>
+              <div class="text-center" style="color: black;" id="comp-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal comp-mode-pill active" data-value="bg"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Background
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg00" id="btn-comp-fg1"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Foreground #1
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg00-alpha" id="btn-comp-alpha1"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Alpha #1
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg01" id="btn-comp-fg2" style="display: none;"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Foreground #2
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg01-alpha"  id="btn-comp-alpha2" style="display: none;"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Alpha #2
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg02" id="btn-comp-fg3" style="display: none;"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Foreground #3
+                    </span>
+                    <span class="button is-normal comp-mode-pill" data-value="fg02-alpha" id="btn-comp-alpha3" style="display: none;"
+                        onclick="selectCompVideo(activeCompMethodPill, activeCompScenePill, this)">
+                        Alpha #3
+                    </span>
+                    <br>
+                </div>
+              </div>
+              <br>
+
+              <div class="video-container"  >
+                  <video class="video" style="width: 100%;" id="compVideo0" autoplay muted loop>
+                    <source src="assets/videos/comparisons_omnimatte/boat-bg-row.mp4" />
+                  </video>
+                  
+                  <div class="column method-labels">
+                    <div class="columns ">
+                      <div class="column has-text-centered  method-label">
+                          Input
+                      </div>
+                      <div class="column has-text-centered  method-label" id="label-comp-omnimatte">
+                          Omnimatte
+                      </div>
+                      <div class="column has-text-centered  method-label" id="label-comp-omnimatte3d">
+                          Omnimatte3D
+                      </div>
+                      <div class="column has-text-centered  method-label" id="label-comp-omnimatterf">
+                          OmnimatteRF
+                      </div>
+                      <div class="column has-text-centered  method-label" id="label-comp-factormatte">
+                          FactorMatte
+                      </div>
+                      <div class="column has-text-centered  method-label">
+                          Ours
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <script>
+                  activeCompMethodPill = document.querySelector('.comp-method-pill.active-pill');
+                  activeCompScenePill = document.querySelector('.comp-scene-pill.active-pill');
+                  activeCompModePill = document.querySelector('.comp-mode-pill.active-pill');
+              </script>
+
+            </div>
+          </div>
+          <div class="col-2"></div>
+          
+      </div>
+      <div class="has-text-justified">
+        <p>
+          We compare our method with existing omnimatte methods (<a href="https://omnimatte.github.io">Omnimatte</a>, <a href="https://openaccess.thecvf.com/content/CVPR2023/papers/Suhail_Omnimatte3D_Associating_Objects_and_Their_Effects_in_Unconstrained_Monocular_Video_CVPR_2023_paper.pdf">Omnimatte3D</a>, <a href="https://omnimatte-rf.github.io/">OmnimatteRF</a>, and <a href="https://factormatte.github.io/">FactorMatte</a>).
+          Existing methods rely on restrictive motion assumptions, such as stationary background, resulting in dynamic background elements becoming entangled with foreground object layers.
+          Omnimatte3D and OmnimatteRF may also produce blurry background layers (e.g., <u  style="cursor: pointer;" onclick="selectCompVideo(activeCompMethodPill, document.getElementById('btn-comp-omnimatte-horses'), activeCompModePill)">horses</u>) because their 3D-aware background representations are sensitive to camera pose estimation quality.
+          Furthermore, these methods lack a generative and semantic prior for completing occluded pixels and accurately associating effects with their corresponding objects.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<section id='sec:comparison-removal' class="hero is-small">
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Comparisons on Object and Effect Removal</h2>
+      
+      <div class="row py-5 mt-5 bg-dark" style="width: 90vw; margin-left: calc(-45vw + 50%)" id="div-video-comp-remove">
+          <div class="col-2"></div>
+          <div class="col-md-8">
+              
+              <script>
+                  activeCompRmMethodPill = document.querySelector('.comprm-method-pill.active-pill');
+                  activeCompRmScenePill = document.querySelector('.comprm-scene-pill.active-pill');
+                  activeCompRmModePill = document.querySelector('.comprm-mode-pill.active-pill');
+              </script>
+              <div class="has-text-centered text-center">
+                <div class="pill-row scene-pills">
+                  <span class="pill comprm-scene-pill active" data-value="cartoon" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/cartoon.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill" data-value="car-puddle" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/car-puddle.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="boat" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/boat.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="eleven-penguins" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eleven-penguins.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="lego" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/lego.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="boys-beach" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/boys-beach.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="parkour" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/parkour.png" width="64">
+                  </span>
+                  <!-- <span class="pill comprm-scene-pill " data-value="eval-chicken" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-chicken.png" width="64">
+                  </span> -->
+                  <span class="pill comprm-scene-pill " data-value="eval-dodge" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-dodge.png" width="64">
+                  </span>
+                  <span class="pill comprm-scene-pill " data-value="eval-chair" onclick="selectCompRmVideo(activeCompRmMethodPill, this, activeCompRmModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/eval-chair.png" width="64">
+                  </span>
+                  <br/>
+                </div>
+                <br>
+                <div class="text-center" style="color: black; display: none;" id="comprm-method-pills">
+                  <div class="btn-group btn-group-sm">
+                      <span class="button is-normal comprm-method-pill" data-value="objectdrop" label="ObjectDrop [Winter et al. 2024]" id="btn-objectdrop"
+                          onclick="selectCompRmVideo(this, activeCompRmScenePill, activeCompRmModePill)">
+                          ObjectDrop
+                      </span>
+                      <span class="button is-normal comprm-method-pill" data-value="propainter" label="ProPainter [Zhou et al. 2023]" id="btn-propainter"
+                          onclick="selectCompRmVideo(this, activeCompRmScenePill, activeCompRmModePill)">
+                          ProPainter
+                      </span>
+                      <span class="button is-normal comprm-method-pill active" data-value="lumiere_inpainting" label="Lumiere-Inpainting <br> [Bar-Tal et al. 2024]" id="btn-lumiere"
+                          onclick="selectCompRmVideo(this, activeCompRmScenePill, activeCompRmModePill)">
+                          Lumiere Inpainting
+                      </span>
+                  </div>
+              </div>
+              <br>
+              <div class="text-center" style="color: black; display: none;" id="comprm-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal comprm-mode-pill active" data-value="bg"
+                        onclick="selectCompRmVideo(activeCompRmMethodPill, activeCompRmScenePill, this)">
+                        Background
+                    </span>
+                </div>
+              </div>
+              <div class="video-container">
+                  <video class="video" style="width: 100%;" id="comprmVideo0" loop playsinline autoplay muted>
+                      <source src="assets/videos/comparisons-removal/cartoon-row.mp4" />
+                  </video>
+                  <div class="column">
+                    <div class="columns">
+                      <div class="column has-text-centered method-label">
+                        Input & object to remove
+                      </div>
+                      <div class="column has-text-centered method-label" id="">
+                        ProPainter
+                      </div>
+                      <div class="column has-text-centered method-label" id="">
+                        Lumiere-Inpainting
+                      </div>
+                      <div class="column has-text-centered method-label" id="">
+                        ObjectDrop
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Ours
+                      </div>
+                    </div>
+              </div>
+              </div>
+
+              <script>
+                  activeCompRmMethodPill = document.querySelector('.comprm-method-pill.active-pill');
+                  activeCompRmScenePill = document.querySelector('.comprm-scene-pill.active-pill');
+                  activeCompRmModePill = document.querySelector('.comprm-mode-pill.active-pill');
+              </script>
+            </div>
+          </div>
+          
+          <div class="col-2"></div>
+      </div>
+    </div>
+    <div class="has-text-justified">
+      <p>
+        We compare our object-effect-removal model, Casper, with existing methods for object removal.
+        Video inpainting models (<a href="https://shangchenzhou.com/projects/ProPainter/">ProPainter</a> and <a href="https://lumiere-video.github.io/">Lumiere-Inpainting</a>) fail to remove soft shadows and reflections outside the input masks.
+        <a href="https://objectdrop.github.io/">ObjectDrop</a> is an image-based model, and thus, it processes each video frame independently and inpaints regions without global context and temporal consistency.
+        We use the same ratio of mask dilation for all the methods.
+      </p>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<section id='sec:method' class="hero is-small" style="background-color: #ffffff;">
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Method</h2>
+      <div class="has-text-justified">
+        <p>Given an input video and binary object masks, we first apply our object-effect-removal
+          model, Casper, to generate a clean-plate background and a set of single-object (solo) videos applying different trimask conditions.
+          The trimasks specify regions to preserve (white), remove (black), and regions that potentially contain uncertain object effects (gray). In
+          Stage 2, a test-time optimization reconstructs the omnimatte layers Oi from pairs of solo video and background video.</p>
+      </div>
+      <div id='subsec:method-overview' class="row py-5 mt-5 bg-dark">
+       <img src="assets/images/pipeline.svg" style="width: 100%;"/> 
+      </div>
+      <div id='subsec:trimask' class="row py-5 mt-5 bg-dark">
+        <h2 class="title has-text-centered is-size-4">
+          Object and Effect Removal with Trimask Condition
+        </h2>
+        <div class="has-text-justified" style="width: 72%; margin-left: 14%;">
+          <p>
+            We use different trimask conditions for an input video to obtain a set of single-object (solo) videos and a clean-plate background video (bottom row).
+            Note that we do not cherry pick the random seeds for the Casper model. We use the same random seed (=0) for all different input videos.
+            <!-- Note that mask dilation is not necessary for our model. While in practice, we may still dilate the mask by a small margin (e.g., 2 pixels) to account for potential misalignments in the video masks generated by SAM2. -->
+          </p>
+          <br>
+        </div>
+        <!-- BEGIN TRIMASK -->
+        <script>
+            activeTrimaskMethodPill = document.querySelector('.trimask-method-pill.active-pill');
+            activeTrimaskScenePill = document.querySelector('.trimask-scene-pill.active-pill');
+            activeTrimaskModePill = document.querySelector('.trimask-mode-pill.active-pill');
+        </script>
+        <div class="has-text-centered text-center">
+          <div class="pill-row scene-pills" style="display: none;">
+            <span class="pill trimask-scene-pill" data-value="car-puddle_resized" onclick="selectTrimaskVideo(activeTrimaskMethodPill, this, activeTrimaskModePill)">
+              <img class="thumbnail-img" src="assets/thumbnails/car-puddle.png" width="64">
+            </span>
+            <span class="pill trimask-scene-pill" data-value="boys-beach_resized" onclick="selectTrimaskVideo(activeTrimaskMethodPill, this, activeTrimaskModePill)">
+              <img class="thumbnail-img" src="assets/thumbnails/boys-beach.png" width="64">
+            </span>
+            <span class="pill trimask-scene-pill active" data-value="three-women_resized" onclick="selectTrimaskVideo(activeTrimaskMethodPill, this, activeTrimaskModePill)">
+              <img class="thumbnail-img" src="assets/thumbnails/three-women.png" width="64">
+            </span>
+          </div>
+          <div class="text-center" style="color: black; display: none;" id="trimask-method-pills">
+            <div class="btn-group btn-group-sm">
+                <span class="button is-normal trimask-method-pill active" data-value="trimask_-1"
+                    onclick="selectTrimaskVideo(this, activeTrimaskScenePill, activeTrimaskModePill)">
+                    Trimask BG
+                </span>
+                <span class="button is-normal trimask-method-pill" data-value="trimask_01" 
+                    onclick="selectTrimaskVideo(this, activeTrimaskScenePill, activeTrimaskModePill)">
+                    Trimask #1
+                </span>
+                <span class="button is-normal trimask-method-pill" data-value="trimask_01"
+                    onclick="selectTrimaskVideo(this, activeTrimaskScenePill, activeTrimaskModePill)">
+                    Trimask #2
+                </span>
+                <span class="button is-normal trimask-method-pill" data-value="trimask_03"
+                    onclick="selectTrimaskVideo(this, activeTrimaskScenePill, activeTrimaskModePill)">
+                    Trimask #3
+                </span>
+            </div>
+        </div>
+        <br>
+        <div class="text-center" style="color: black; display: none;" id="trimask-mode-pills">
+          <div class="btn-group btn-group-sm">
+              <span class="button is-normal trimask-mode-pill active" data-value="none"
+                  onclick="selectTrimaskVideo(activeTrimaskMethodPill, activeTrimaskScenePill, this)">
+                  none
+              </span>
+          </div>
+        </div>
+        <div class="video-container" style="width: 72%; margin-left: 14%; margin-right: 14%;">
+            <video class="video" style="width: 100%;" id="trimaskVideo0" loop playsinline autoplay muted>
+                <source src="assets/videos/trimask/three-women_resized.mp4" />
+            </video>
+            <div class="column">
+              <div class="columns">
+                <div class="column has-text-centered method-label">
+                  Input
+                </div>
+                <div class="column has-text-centered method-label">
+                  Trimask
+                </div>
+                <div class="column has-text-centered method-label">
+                  Output removal
+                </div>
+              </div>
+            </div>
+        </div>
+        <br/>
+        <script>
+            activeTrimaskMethodPill = document.querySelector('.trimask-method-pill.active-pill');
+            activeTrimaskScenePill = document.querySelector('.trimask-scene-pill.active-pill');
+            activeTrimaskModePill = document.querySelector('.trimask-mode-pill.active-pill');
+        </script>
+      <!--END TRIMASK-->
+      </div>
+
+      <!-- <div id='subsec:prior' class="row py-5 mt-5 bg-dark">
+        <h2 class="title has-text-centered is-size-4">
+          Effect Association Prior in Video Generator
+        </h2>
+        <div class="has-text-justified">
+          <p>
+            
+          </p>
+          <br>
+        </div>
+          <script>
+              activeT2VPriorMethodPill = document.querySelector('.t2vprior-method-pill.active-pill');
+              activeT2VPriorScenePill = document.querySelector('.t2vprior-scene-pill.active-pill');
+              activeT2VPriorModePill = document.querySelector('.t2vprior-mode-pill.active-pill');
+          </script>
+          <div class="has-text-centered text-center">
+            <div class="pill-row scene-pills">
+              <span class="pill t2vprior-scene-pill active" data-value="tennis" onclick="selectT2VPriorVideo(activeT2VPriorMethodPill, this, activeT2VPriorModePill)">
+                <img class="thumbnail-img" src="assets/thumbnails/tennis.png" width="64">
+              </span>
+              <span class="pill t2vprior-scene-pill" data-value="camel" onclick="selectT2VPriorVideo(activeT2VPriorMethodPill, this, activeT2VPriorModePill)">
+                <img class="thumbnail-img" src="assets/thumbnails/camel.png" width="64">
+              </span>
+              <span class="pill t2vprior-scene-pill" data-value="parkour" onclick="selectT2VPriorVideo(activeT2VPriorMethodPill, this, activeT2VPriorModePill)">
+                <img class="thumbnail-img" src="assets/thumbnails/parkour.png" width="64">
+              </span>
+            </div>
+            <div class="text-center" style="color: black; display: none;" id="t2vprior-method-pills">
+              <div class="btn-group btn-group-sm">
+                  <span class="button is-normal t2vprior-method-pill active" data-value="none"
+                      onclick="selectT2VPriorVideo(this, activeT2VPriorScenePill, activeT2VPriorModePill)">
+                      None
+                  </span>
+                 
+              </div>
+          </div>
+          <br>
+          <div class="text-center" style="color: black; display: none;" id="t2vprior-mode-pills">
+            <div class="btn-group btn-group-sm">
+                <span class="button is-normal t2vprior-mode-pill active" data-value="none"
+                    onclick="selectT2VPriorVideo(activeT2VPriorMethodPill, activeT2VPriorScenePill, this)">
+                    none
+                </span>
+            </div>
+          </div>
+          <div class="video-container" style="height: 384px;">
+              <video class="video" style="max-width: 100%; max-height: 384px;" id="t2vpriorVideo0" loop playsinline autoplay muted controls>
+                  <source src="assets/videos/t2v_prior/tennis.mp4" />
+              </video>
+              <div class="column">
+                <div class="columns">
+                  <div class="column has-text-centered method-label">
+                    Input
+                  </div>
+                  <div class="column has-text-centered method-label">
+                    Target object mask
+                  </div>
+                  <div class="column has-text-centered method-label">
+                    Self-attention response
+                  </div>
+                </div>
+              </div>
+          </div>
+          <script>
+              activeT2VPriorMethodPill = document.querySelector('.t2vprior-method-pill.active-pill');
+              activeT2VPriorScenePill = document.querySelector('.t2vprior-scene-pill.active-pill');
+              activeT2VPriorModePill = document.querySelector('.t2vprior-mode-pill.active-pill');
+          </script>
+      </div> -->
+
+      <div id='subsec:train_data'  class="row py-5 mt-5 bg-dark">
+        <h2 class="title has-text-centered is-size-4">
+          Training data
+        </h2>
+        
+        <!-- BEGIN TRAINING DATA -->
+          <script>
+              activeTrainDataMethodPill = document.querySelector('.traindata-method-pill.active-pill');
+              activeTrainDataScenePill = document.querySelector('.traindata-scene-pill.active-pill');
+              activeTrainDataModePill = document.querySelector('.traindata-mode-pill.active-pill');
+          </script>
+          <div class="has-text-centered text-center">
+            <div class="pill-row scene-pills" style="display: none;">
+              <span class="pill traindata-scene-pill active" data-value="none" onclick="selectTrainDataVideo(activeTrainDataMethodPill, this, activeTrainDataModePill)">
+                <img class="thumbnail-img" src="assets/thumbnails/factormatte-puddle.png" width="64">
+              </span>
+            </div>
+            <div class="text-center" style="color: black;" id="traindata-method-pills">
+              <div class="btn-group btn-group-sm">
+                  <span class="button is-normal traindata-method-pill active" data-value="omnimatte"
+                      onclick="selectTrainDataVideo(this, activeTrainDataScenePill, activeTrainDataModePill)">
+                      Omnimatte
+                  </span>
+                  <span class="button is-normal traindata-method-pill" data-value="tripod"
+                      onclick="selectTrainDataVideo(this, activeTrainDataScenePill, activeTrainDataModePill)">
+                      Tripod
+                  </span>
+                  <span class="button is-normal traindata-method-pill" data-value="kubric"
+                      onclick="selectTrainDataVideo(this, activeTrainDataScenePill, activeTrainDataModePill)">
+                      Kubric
+                  </span>
+                  <span class="button is-normal traindata-method-pill" data-value="objectpaste"
+                      onclick="selectTrainDataVideo(this, activeTrainDataScenePill, activeTrainDataModePill)">
+                      Object-Paste
+                  </span>
+              </div>
+          </div>
+          <br>
+          <div class="text-center" style="color: black; display: none;" id="traindata-mode-pills">
+            <div class="btn-group btn-group-sm">
+                <span class="button is-normal traindata-mode-pill active" data-value="none"
+                    onclick="selectTrainDataVideo(activeTrainDataMethodPill, activeTrainDataScenePill, this)">
+                    none
+                </span>
+            </div>
+          </div>
+          <div class="video-container">
+              <video class="video" style="width: 80%; padding-right: 80px;" id="traindataVideo0" loop playsinline autoplay muted controls>
+                  <source src="assets/videos/train_data/omnimatte.mp4" />
+              </video>
+              <div class="column">
+                <div class="columns">
+                  <div class="column has-text-centered method-label">
+                  </div>
+                </div>
+              </div>
+          </div>
+          <script>
+              activeTrainDataMethodPill = document.querySelector('.traindata-method-pill.active-pill');
+              activeTrainDataScenePill = document.querySelector('.traindata-scene-pill.active-pill');
+              activeTrainDataModePill = document.querySelector('.traindata-mode-pill.active-pill');
+          </script>
+        </div>
+        <!--END TRAINING DATA-->
+      </div>
+      <div class="has-text-justified" style="height: 200px;">
+        <p id="p-traindata-desc" class="has-text-justified">
+          <!-- We curate a training dataset of real and synthetic video examples from the following four categories: -->
+          <!-- <br><br> -->
+          
+          (i) <b>Omnimatte</b>: We collect omnimatte results from existing omnimatte methods (Omnimatte, Omnimatte3D, and OmnimatteRF) to provide examples of cause-and-effect relationships in real videos.
+          <br><br>
+          (ii) <b>Tripod</b>: The Tripod dataset consists of videos captured with stationary cameras, providing pseudo-examples of more complex real-world scenarios, such as water effects and dynamic backgrounds.
+          <br><br>
+          
+          (iii) <b>Kubric</b>: We use Kubric to synthesize multi-object scenes with diverse reflections and shadows. we observe that many real-world scenarios exhibit multiple instances of the same object type in a scene, such as dogs, pedestrians, or vehicles.
+          Therefore, we generate scenes with duplicated objects to train the model to handle multiple similar objects.
+          <br><br>
+          
+          (iv) <b>Object-Paste</b>: We segment objects from real videos and paste them onto target real videos to strengthen the model’s inpainting capabilities and background preservation.
+          <br><br>
+          
+          For the synthesized Kubric and Object-Paste data, we randomly switch the gray and white colors to encourage the model to learn background preservation and inpainting for gray-labeled regions.
+          The training data is augmented through horizontal and temporal flipping, as well as random cropping.
+        </p>
+        <br>
+      </div>
+      <!-- <div class="row py-5 mt-5 bg-dark"> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id='sec:ablation-data' class="hero is-small">
+  <div class="container"> 
+    
+    <!-- <div class="container-fluid" style="margin-left: -25%; margin-right: -25%;"> -->
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Ablation Study on Training data of Casper</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+      </h2>
+      
+      <div class="row py-5 mt-5 bg-dark"  style="width: 100vw; margin-left: calc(-50vw + 50%);">
+          <!-- <div class="col-2"></div> -->
+          <!-- <div class="col-md-8"> -->
+          <div>
+              <script>
+                  activeAblDataMethodPill = document.querySelector('.abldata-method-pill.active-pill');
+                  activeAblDataScenePill = document.querySelector('.abldata-scene-pill.active-pill');
+                  activeAblDataModePill = document.querySelector('.abldata-mode-pill.active-pill');
+              </script>
+              <div class="has-text-centered text-center">
+                <div class="pill-row scene-pills">
+                  <span class="pill abldata-scene-pill active" data-value="puppy-walk-fg=01_highlight_" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/puppy-walk.png" width="64">
+                  </span>
+                  <!-- <span class="pill abldata-scene-pill " data-value="car-puddle-fg=-1" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/car-puddle.png" width="64">
+                  </span> -->
+                  <span class="pill abldata-scene-pill" data-value="boat-fg=-1" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/boat.png" width="64">
+                  </span>
+                  <!-- <span class="pill abldata-scene-pill" data-value="sand-draw-fg=00" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/sand-draw.png" width="64">
+                  </span> -->
+                  <span class="pill abldata-scene-pill" data-value="davis_judo-fg=-1_highlight_" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/judo.png" width="64">
+                  </span>
+                  <span class="pill abldata-scene-pill" data-value="davis_goat-fg=-1_highlight_" onclick="selectAblDataVideo(activeAblDataMethodPill, this, activeAblDataModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/goat.png" width="64">
+                  </span>
+                  <br/>
+                </div>
+                <div class="text-center" style="color: black;" id="abldata-method-pills">
+                  <div class="btn-group btn-group-sm">
+                      <span class="button is-normal abldata-method-pill" data-value="none" id="btn-abladata" style="display: none;"
+                          onclick="selectAblDataVideo(this, activeAblDataScenePill, activeAblDataModePill)">
+                          abla data
+                      </span>
+                  </div>
+              </div>
+              <br>
+              <div class="text-center" style="color: black; display: none;" id="abldata-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal abldata-mode-pill active" data-value="bg"
+                        onclick="selectAblDataVideo(activeAblDataMethodPill, activeAblDataScenePill, this)">
+                        Background
+                    </span>
+                </div>
+              </div>
+              <div class="video-container" style="max-height: 480px;">
+                  <video class="video" style="max-width: 100%;" id="abldataVideo0" loop playsinline autoplay muted controls>
+                      <source src="assets/videos/ablation_data/puppy-walk-fg=01_highlight_with-mask_mask-dilated.mp4" />
+                  </video>
+                  <div class="column">
+                    <div class="columns">
+                      <div class="column has-text-centered method-label">
+                          Input
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          Trimask
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          Omnimatte-only
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          + Tripod
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          + Kubric
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          + Object-Paste (full)
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <script>
+                  activeAblDataMethodPill = document.querySelector('.abldata-method-pill.active-pill');
+                  activeAblDataScenePill = document.querySelector('.abldata-scene-pill.active-pill');
+                  activeAblDataModePill = document.querySelector('.abldata-mode-pill.active-pill');
+              </script>
+            </div>
+          </div>
+          
+          <!-- <div class="col-2"></div> -->
+      </div>
+      <div class="has-text-justified">
+        <p>
+          We assess the individual contributions of each dataset category to our model's performance by incrementally adding each category to the training set.
+          While the Omnimatte data provides basic examples of shadows in real-world videos, it primarily features static backgrounds and single objects.
+          The Tripod data provides additional real-world scenarios to handle better water effects, such as reflections and boat wakes.
+          Our Kubric synthetic data strengthens the models' ability to handle multi-object scenes.
+          Finally, the Object-Paste data reduces undesired background changes and improves inpainting quality.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<section id='sec:ablation-condition' class="hero is-small"></section>
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Ablation Study on Input Condition of Casper</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+      </h2>
+      
+      <div class="row py-5 mt-5 bg-dark" style="margin-left: -12.5%; margin-right: -12.5%;">
+          <!-- <div class="col-2"></div> -->
+          <!-- <div class="col-md-8"> -->
+          <div>
+              <script>
+                  activeAblCondMethodPill = document.querySelector('.ablcond-method-pill.active-pill');
+                  activeAblCondScenePill = document.querySelector('.ablcond-scene-pill.active-pill');
+                  activeAblCondModePill = document.querySelector('.ablcond-mode-pill.active-pill');
+              </script>
+              <div class="has-text-centered text-center">
+                <div class="pill-row scene-pills">
+                  <span class="pill ablcond-scene-pill active" data-value="factormatte-puddle-fg=-1_highlight" onclick="selectAblCondVideo(activeAblCondMethodPill, this, activeAblCondModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/factormatte-puddle.png" width="64">
+                  </span>
+                  <span class="pill ablcond-scene-pill" data-value="delivery-fg=00_highlight" onclick="selectAblCondVideo(activeAblCondMethodPill, this, activeAblCondModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/delivery.png" width="64">
+                  </span>
+                  <span class="pill ablcond-scene-pill" data-value="red-umbrella-fg=00_highlight" onclick="selectAblCondVideo(activeAblCondMethodPill, this, activeAblCondModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/red-umbrella.png" width="64">
+                  </span>
+                  <!-- <span class="pill ablcond-scene-pill" data-value="puppy-walk-fg=01_highlight" onclick="selectAblCondVideo(activeAblCondMethodPill, this, activeAblCondModePill)">
+                    <img class="thumbnail-img" src="assets/thumbnails/puppy-walk.png" width="64">
+                  </span> -->
+                </div>
+                <div class="text-center" style="color: black;" id="ablcond-method-pills">
+                  <div class="btn-group btn-group-sm">
+                      <span class="button is-normal ablcond-method-pill" data-value="none" id="btn-ablacond" style="display: none;"
+                          onclick="selectAblCondVideo(this, activeAblCondScenePill, activeAblCondModePill)">
+                          abla cond
+                      </span>
+                  </div>
+              </div>
+              <br>
+              <div class="text-center" style="color: black; display: none;" id="ablcond-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal ablcond-mode-pill active" data-value="bg"
+                        onclick="selectAblCondVideo(activeAblCondMethodPill, activeAblCondScenePill, this)">
+                        Background
+                    </span>
+                </div>
+              </div>
+              <div class="video-container">
+                  <video class="video" style="max-width: 100%;" id="ablcondVideo0" loop playsinline autoplay muted controls>
+                      <source src="assets/videos/ablation_condition/factormatte-puddle-fg=-1_highlight_mask-dilated.mp4" />
+                  </video>
+                  <div class="column">
+                    <div class="columns">
+                      <div class="column has-text-centered method-label">
+                          Input
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          Masked RGB + binary mask
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          Unmasked RGB + binary mask
+                      </div>
+                      <div class="column has-text-centered method-label">
+                          Unmasked RGB + Trimask (ours)
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <script>
+                  activeAblCondMethodPill = document.querySelector('.ablcond-method-pill.active-pill');
+                  activeAblCondScenePill = document.querySelector('.ablcond-scene-pill.active-pill');
+                  activeAblCondModePill = document.querySelector('.ablcond-mode-pill.active-pill');
+              </script>
+            </div>
+          </div>
+          <!-- <div class="col-2"></div> -->
+      </div>
+      <div class="has-text-justified">
+        <p>
+          Our proposed trimask explicitly defines the regions to be removed or preserved, thereby enabling more accurate handling of multi-object scenarios.
+          In contrast, the model trained on binary masks is susceptible to ambiguity, potentially leading to undesired removal of objects meant to be preserved.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<section id='sec:failures' class="hero is-small"></section>
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Our Limitations</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+      </h2>
+      
+      <div class="row py-5 mt-5 bg-dark">
+          <div class="col-2"></div>
+          <div class="col-md-8">
+            <script>
+                activeFailurePill = document.querySelector('.failure-method-pill.active-pill');
+                activeFailureScenePill = document.querySelector('.failure-scene-pill.active-pill');
+                activeFailureModePill = document.querySelector('.failure-mode-pill.active-pill');
+            </script>
+            <div class="has-text-centered text-center">
+              <div class="pill-row scene-pills">
+
+                <span class="pill failure-scene-pill" data-value="trampoline" onclick="selectFailureVideo(activeFailureMethodPill, this, activeFailureModePill)" id="btn-failure-trampoline">
+                  <img class="thumbnail-img" src="assets/thumbnails/trampoline.png" width="64">
+                </span>
+                <span class="pill failure-scene-pill" data-value="dog-agility" onclick="selectFailureVideo(activeFailureMethodPill, this, activeFailureModePill)" id="btn-failure-dog-agility">
+                  <img class="thumbnail-img" src="assets/thumbnails/dog-agility.png" width="64">
+                </span>
+                <span class="pill failure-scene-pill" data-value="five-beagles" onclick="selectFailureVideo(activeFailureMethodPill, this, activeFailureModePill)" id="btn-failure-beagles">
+                  <img class="thumbnail-img" src="assets/thumbnails/five-beagles.png" width="64">
+                </span>
+                <span class="pill failure-scene-pill active" data-value="bowling" onclick="selectFailureVideo(activeFailureMethodPill, this, activeFailureModePill)" id="btn-failure-bowling">
+                  <img class="thumbnail-img" src="assets/thumbnails/bowling.png" width="64">
+                </span>
+                <span class="pill failure-scene-pill" data-value="dog-crosswalk" onclick="selectFailureVideo(activeFailureMethodPill, this, activeFailureModePill)" id="btn-failure-crosswalk">
+                  <img class="thumbnail-img" src="assets/thumbnails/dog-crosswalk.png" width="64">
+                </span>
+                <br/>
+              </div>
+              <div class="text-center" style="color: black; display: none;" id="failure-method-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal failure-method-pill active" data-value="none"
+                        onclick="selectFailureVideo(this, activeFailureScenePill, activeFailureModePill)">
+                        None
+                    </span>
+                </div>
+              </div>
+            
+              <div class="text-center" style="color: black; display: none;" id="failure-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal failure-mode-pill active" data-value="none"
+                        onclick="selectFailureVideo(activeFailureMethodPill, activeFailureScenePill, this)">
+                        None
+                    </span>
+                </div>
+              </div>
+              <br>
+              <div class="video-container">
+                  <video class="video" style="max-width: 100%;" id="failureVideo0" loop playsinline autoplay muted controls>
+                      <source src="assets/videos/failures/trampoline.mp4" />
+                  </video>
+                  <div class="column">
+                    <div class="columns">
+                      <div class="column has-text-centered method-label">
+                        Input
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Trimask
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Output removal
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <script>
+                activeFailureMethodPill = document.querySelector('.failure-method-pill.active-pill');
+                activeFailureScenePill = document.querySelector('.failure-scene-pill.active-pill');
+                activeFailureModePill = document.querySelector('.failure-mode-pill.active-pill');
+            </script>
+          </div>
+          <div class="col-2"></div>
+      </div>
+      <div class="has-text-justified">
+        <p id="p-failure-desc">
+          While our method addresses the limitations of existing approaches, it still has certain limitations.
+          <br>
+          <br>
+          (i) Omnimatte layers handle color blending but are not designed to capture shape deformations as object effects. 
+          Because of this limitation, we focused on training Casper to remove color-related effects (i.e., shadows and reflections),
+          so it may struggle to remove physical interactions with the environment, as observed in the <u  style="cursor: pointer;" onclick="selectFailureVideo(activeFailureMethodPill, document.getElementById('btn-failure-trampoline'), activeFailureModePill)">trampoline</u> and <u style="cursor: pointer;" onclick="selectFailureVideo(activeFailureMethodPill, document.getElementById('btn-failure-dog-agility'), activeFailureModePill)">dog-agility</u> examples.
+          <br>
+          <br>
+          (ii) The removal model may not always produce the desired outcome, particularly in challenging multi-object cases (e.g., the <u  style="cursor: pointer;" onclick="selectFailureVideo(activeFailureMethodPill, document.getElementById('btn-failure-beagles'), activeFailureModePill)">five-beagles</u> and <u  style="cursor: pointer;"  onclick="selectFailureVideo(activeFailureMethodPill, document.getElementById('btn-failure-bowling'), activeFailureModePill)">bowling</u> examples).
+          <br>
+          <br>
+          (iii) In the <u  style="cursor: pointer;" onclick="selectFailureVideo(activeFailureMethodPill, document.getElementById('btn-failure-crosswalk'), activeFailureModePill)">dog-crosswalk</u> example, the smaller dog is initially invisible, posing a challenge for our Casper model to complete the dog without reference to previous frames.
+          Furthermore, the challenging reflection effects on the crosswalk and road further complicate the removal process.
+          Casper could remove the reflection of the person but leave the larger dog's reflection on the road.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<br>
+
+<section class="section" id="sec:user-specified">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered ">
+      <div class="column">
+        <h2 class="title is-3">User-specified trimask</h2>
+        <div class="has-text-justified">
+          <p>
+            We observe some cases where Casper will associate unrelated dynamic background effects with a foreground layer, such as the waves in the below example.
+            To mitigate this, our system allows the user to modify the trimask by specifying a coarse preservation region to preserve the background waves better.
+          </p>
+        </div>
+        <div class="row py-5 mt-5 bg-dark">
+          <div class="col-2"></div>
+          <div class="col-md-8" id="div-userspecified-overview" style="height: 400px;">
+            <video class="video" style="max-width: 100%; padding-right: 0px; height: 400px;" id="userspecifiedVideo" loop playsinline autoplay muted>
+              <source src="assets/videos/user-specified/overview2.mp4" />
+            </video>
+          </div>
+          <div class="col-md-8" id="div-userspecified-zoom" style="height: 400px; display: none;">
+            <video class="video" style="width: 80%;" id="userspecifiedZoomedVideo" loop playsinline autoplay muted>
+              <source src="assets/videos/user-specified/zoomed.mp4" />
+            </video>
+            <div class="column">
+              <div class="columns" style="width: 80%; margin-left:10%;">
+                <div class="column has-text-centered method-label" style=" margin-left: 5px; margin-right: 5px;">
+                  Input
+                </div>
+                <div class="column has-text-centered method-label" style=" margin-left: 5px; margin-right: 5px;">
+                  Without user-specified
+                </div>
+                <div class="column has-text-centered method-label" style=" margin-left: 5px; margin-right: 5px;">
+                  With user-specified
+                </div>
+              </div>
+            </div>
+          </div>
+          <span class="button is-normal selfattn-method-pill" data-value="fg00" id="btn-userspecified"
+              onclick="zoomUserSpecified()">
+              Click to zoom in
+          </span>
+          <div class="col-2"></div>
+        </div>
+        <div class="column has-text-justified">
+          <span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id='sec:attention-analysis' class="hero is-small">
+  <div class="container"> 
+    
+    <div class="container-fluid">
+      <h2 class="title has-text-centered is-3">Visualization of Effect Association in the Self-Attention of Video Generator</h2>
+      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
+      </h2>
+      
+      <div class="row py-5 mt-5 bg-dark">
+          <div class="col-2"></div>
+          <div class="col-md-8">
+            <script>
+                activeSelfAttnMethodPill = document.querySelector('.selfattn-method-pill.active-pill');
+                activeSelfAttnScenePill = document.querySelector('.selfattn-scene-pill.active-pill');
+                activeSelfAttnModePill = document.querySelector('.selfattn-mode-pill.active-pill');
+            </script>
+            <div class="has-text-centered text-center">
+              <div class="pill-row scene-pills">
+                <span class="pill selfattn-scene-pill active" data-value="car-puddle" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-car">
+                  <img class="thumbnail-img" src="assets/thumbnails/car-puddle.png" width="64">
+                </span>
+                <span class="pill selfattn-scene-pill" data-value="parkour" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-parkour">
+                  <img class="thumbnail-img" src="assets/thumbnails/parkour.png" width="64">
+                </span>
+                <!-- <span class="pill selfattn-scene-pill" data-value="camel" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-camel">
+                  <img class="thumbnail-img" src="assets/thumbnails/camel.png" width="64">
+                </span> -->
+                <span class="pill selfattn-scene-pill" data-value="boys-beach" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-beach">
+                  <img class="thumbnail-img" src="assets/thumbnails/boys-beach.png" width="64">
+                </span>
+                <!-- <span class="pill selfattn-scene-pill" data-value="puppy-walk" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-puppy">
+                  <img class="thumbnail-img" src="assets/thumbnails/puppy-walk.png" width="64">
+                </span> -->
+                <span class="pill selfattn-scene-pill" data-value="five-beagles" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, this, activeSelfAttnModePill)" id="btn-attn-beagles">
+                  <img class="thumbnail-img" src="assets/thumbnails/five-beagles.png" width="64">
+                </span>
+                <br/>
+              </div>
+              <br>
+              <div class="text-center" style="color: black;" id="selfattn-method-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal selfattn-method-pill active" data-value="fg00" id="btn-selfattn-fg0"
+                        onclick="selectSelfAttnVideo(this, activeSelfAttnScenePill, activeSelfAttnModePill)">
+                        Foreground #1
+                    </span>
+                    <span class="button is-normal selfattn-method-pill" data-value="fg01" id="btn-selfattn-fg1"
+                        onclick="selectSelfAttnVideo(this, activeSelfAttnScenePill, activeSelfAttnModePill)">
+                        Foreground #2
+                    </span>
+                    <span class="button is-normal selfattn-method-pill" data-value="fg02"  id="btn-selfattn-fg2"
+                        onclick="selectSelfAttnVideo(this, activeSelfAttnScenePill, activeSelfAttnModePill)">
+                        Foreground #3
+                    </span>
+                </div>
+              </div>
+            
+              <br>
+              <div class="text-center" style="color: black;" id="selfattn-mode-pills">
+                <div class="btn-group btn-group-sm">
+                    <span class="button is-normal selfattn-mode-pill active" data-value="block=00" id="attn-block0"
+                        onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, activeSelfAttnScenePill, this)">
+                        Spatial Attention Block #1
+                    </span>
+                    <span class="button is-normal selfattn-mode-pill" data-value="block=08"
+                        onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, activeSelfAttnScenePill, this)">
+                        Spatial Attention Block #9
+                    </span>
+                    <span class="button is-normal selfattn-mode-pill" data-value="block=15"
+                        onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, activeSelfAttnScenePill, this)">
+                        Spatial Attention Block #16
+                    </span>
+                </div>
+              </div>
+              <br>
+              <div class="video-container">
+                  <video class="video" style="max-width: 100%;" id="selfattnVideo0" loop playsinline autoplay muted controls>
+                      <source src="assets/videos/self-attn-analysis/boys-beach_fg01_block=00.mp4" />
+                  </video>
+                  <div class="column">
+                    <div class="columns">
+                      <div class="column has-text-centered method-label">
+                        Input & target object <br> for visualization metric
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Lumiere T2V<br>output & attention
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Lumiere Inpainting<br>output & attention
+                      </div>
+                      <div class="column has-text-centered method-label">
+                        Our Casper<br>output & attention
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            
+            <br/>
+            <script>
+                activeSelfAttnMethodPill = document.querySelector('.selfattn-method-pill.active-pill');
+                activeSelfAttnScenePill = document.querySelector('.selfattn-scene-pill.active-pill');
+                activeSelfAttnModePill = document.querySelector('.selfattn-mode-pill.active-pill');
+            </script>
+          </div>
+          <div class="col-2"></div>
+      </div>
+      <br>
+      <div class="has-text-justified">
+        <p>
+          To investigate the inherent understanding of object-effect associations in the text-to-video (T2V) Lumiere generation model,
+          we analyze its self-attention patterns during the denoising process using SDEdit.
+          We hypothesize that the T2V model possesses an intrinsic understanding of effect associations, allowing us to train an effective object-effect-removal model with a relatively small dataset.
+          <br><br>
+          We further compare the attention behaviors of the original T2V model, the Lumiere-Inpainting model, and our Casper model, which is sequentially fine-tuned from the T2V model.
+          To ensure accurate attention measurement, we do not dilate the input mask conditions for both Inpainting and Casper models.
+          <br><br>
+
+          The visualized value of each pixel indicates the strength of association between its query token and the key tokens in the target object mask region.
+          We visualize the first, middle, and final attention blocks of the U-Net architecture at the sampling step t=0.125.
+          For a detailed description of the attention visualization metric, please refer to Section 3.3 of our main paper.
+          <br><br>
+
+          We observe that the T2V model's object query tokens exhibit a strong focus on the object itself, as its primary task is to <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">generate the object and its effects</u></b>.
+          This tendency may also be present in the Inpainting model when it attempts to fill the mask region with another object to justify shadows.
+          In contrast, Casper's object query tokens show less self-attention and more attention to the background region, suggesting a focus on <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">background completion</u></b> rather than object and effect generation.
+          <br><br>
+
+          In multi-object scenarios (<u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), activeSelfAttnModePill)">boys-beach</u>,
+          <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>),
+          the T2V and Inpainting models may associate different, similar objects with the target object.
+          Our Casper model, however, demonstrates a lower attention response (darker) to similar objects, indicating a <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), document.getElementById('attn-block0'))">stronger ability to isolate individual objects</u></b>.
+          <br><br>
+          
+          We also analyzed the attention patterns of the failure case, <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>,
+          where our Casper model did not remove the corresponding shadow completely.
+          We hypothesize that the effect association is already weak in the T2V model, and our Casper model, inheriting knowledge from the pretrained models, struggles to handle such challenging cases.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<br>
+<br>
+<br>
+<!-- <section class="section" id="acknowledgements">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered ">
+      <div class="column">
+        <h2 class="title is-3">Acknowledgements</h2>
+        <div class="column has-text-justified">
+          <span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{generative-omnimatte,
+  author    = {Lee, Yao-Chih and Lu, Erika and Rumbley, Sarah and Geyer, Michal and Huang, Jia-Bin and Dekel, Tali and Cole, Forrester},
+  title     = {Generative Omnimatte: Learning to Decompose Video into Layers},
+  journal   = {arXiv preprint arXiv:2411.xxxxx},
+  year      = {2024},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="content is-centered">
+        <p>
+          This template is borrowed from <a
+          href="https://github.com/nerfies/nerfies.github.io">nerfies</a>
+          and <a href="https://reconfusion.github.io/">ReconFusion</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
