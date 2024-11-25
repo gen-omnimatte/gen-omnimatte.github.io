@@ -42,7 +42,8 @@ var activeFailureMethodPill = null;
 var activeFailureScenePill = null;
 var activeFailureModePill = null;
 
-var carousels = null;
+var carousel_demo = null;
+var carousel_sidebyside = null;
 
 var demo_items = null;
 
@@ -145,7 +146,7 @@ function reload_carousel_videos() {
 }
 
 function configure_carousel() {
-    var options = {
+    var options_show3 = {
             slidesToScroll: 1,
             slidesToShow: 3,
             loop: true,
@@ -154,18 +155,37 @@ function configure_carousel() {
             autoplaySpeed: 3000,
             pagination: false,
     }
+    var options_show1 = {
+        slidesToScroll: 1,
+        slidesToShow: 1,
+        loop: true,
+        infinite: true,
+        autoplay: false,
+        autoplaySpeed: 3000,
+        pagination: false,
+}
     // Initialize all div with carousel class
-    carousels = bulmaCarousel.attach('.carousel', options);
+    carousel_demo = bulmaCarousel.attach('#demo-carousel', options_show3);
+    carousel_sidebyside = bulmaCarousel.attach('#sidebyside-carousel', options_show1);
     
+    
+    carousel_demo[0].on('before:show', state => {
+        console.log(state);
+        reload_carousel_videos();
+    });
+
+    carousel_sidebyside[0].on('before:show', state => {
+        console.log(state);
+    });
     // Loop on each carousel initialized
-    for(var i = 0; i < carousels.length; i++) {
-        // Add listener to  event
-        // carousels[i].reset();
-        carousels[i].on('before:show', state => {
-            console.log(state);
-            reload_carousel_videos();
-        });
-    }
+    // for(var i = 0; i < carousels.length; i++) {
+    //     // Add listener to  event
+    //     // carousels[i].reset();
+    //     carousels[i].on('before:show', state => {
+    //         console.log(state);
+    //         reload_carousel_videos();
+    //     });
+    // }
 
     // Access to bulmaCarousel instance of an element
     var element = document.querySelector('#item');
@@ -251,8 +271,8 @@ function autoScroll(target_name) {
     }
     console.log(target_idx);
     if (target_idx >= 0) {
-        carousels[0].state.next = Number(target_idx - 1);
-        carousels[0].show(target_idx - 1);
+        carousel_demo[0].state.next = Number(target_idx - 1);
+        carousel_demo[0].show(target_idx - 1);
     }
     reload_carousel_videos();
 }

@@ -48,8 +48,8 @@
 </head>
 <body onresize="reload();">
 
-<section class="hero">
-  <div class="hero-body" style="padding-bottom: 0;">
+<section class="hero" style="padding-bottom: 0; margin-bottom: 0;">
+  <div class="hero-body" style="padding-bottom: 0; margin-bottom: 0;">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
@@ -141,14 +141,14 @@
 </nav> -->
 
 <section id='sec:demo' class="hero is-small">
-  <div class="container" > 
+  <div class="container" style="margin-top: 0; padding-top: 0;" > 
     
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top: 0; padding-top: 0;">
       <!-- <h2 class="title has-text-centered is-3">Demo</h2>
       <h2 class="title has-text-centered is-size-5" style="font-weight: 400; font-style: italic;">
         Demo
       </h2> -->
-      <div class="row py-5 mt-5 bg-dark" style="margin-top: 0; padding-top: 0;">
+      <div class="" style="margin-top: 0; padding-top: 0;">
           <div class="col-2"></div>
           <div class="col-md-8">
               <script>
@@ -157,7 +157,7 @@
                   activeDemoModePill = document.querySelector('.demo-mode-pill.active-pill');
               </script>
               <div class="has-text-centered text-center">
-                  <div class="video-container">
+                  <div class="video-container" style="padding: 0;">
                       <video class="video" style="height: 520px; max-width: 100%;" m id="demoVideo0" loop playsinline autoplay muted>
                           <source src="assets/videos/layers/boys-beach_animation_pause-occlusion_zoomed.mp4" />
                       </video>
@@ -170,6 +170,24 @@
                           </span>
                       </div>
                   </div>
+                  <div class="column" >
+                    <div class="columns">
+                      <div class="column has-text-centered method-label" id=""></div>
+                      <div class="column has-text-centered method-label">
+                        Input video
+                      </div>
+                      <div class="column has-text-centered method-label" id=""></div>
+                      <div class="column has-text-centered method-label" id=""></div>
+                      <div class="column has-text-centered method-label">
+                        Omnimatte layers
+                      </div>
+                      <div class="column has-text-centered method-label" id=""></div>
+                    </div>
+                    <br>
+                    <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px;">
+                      Our method decomposes a video into a set of RGBA omnimatte layers,<br>where each layer consists of a fully-visible object and its associated effects like shadows and reflections.
+                    </h2>
+              </div>
 
 
                   <br>
@@ -217,9 +235,7 @@
               </div>
           </div>
           <div class="col-2"></div>
-          <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px;">
-            Our method decomposes a video into a set of RGBA omnimatte layers,<br>where each layer consists of a fully-visible object and its associated effects like shadows and reflections.
-          </h2>
+          
       </div>
     </div>
   </div>
@@ -332,14 +348,129 @@
             </video>
           </div>
       </div>
-      <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px; font-style: italic; padding-top: 20px;">
-        Our omnimattes enable a wide range of video editing for users.
-        (Scroll to view more videos)
-      </h2>
+      
     </div>
+    <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px; font-style: italic; padding-top: 20px;">
+      Our omnimattes enable a wide range of video editing for users.
+      (Scroll to view more videos)
+    </h2>
   </div>
 </section>
 
+<section id='sec:sidebyside-edit' class="hero is-light is-small">
+  <div class="hero-body">
+    
+    <div class="container"  style="padding-left: 5%; padding-right: 5%;">
+      <!-- <h2 class="has-text-centered title">
+          <b>Video editing</b>
+      </h2> -->
+      <div id="sidebyside-carousel" class="carousel results-carousel">
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/sand-draw_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/lego_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/six-penguins_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/cartoon_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/ice-skating_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/omnimatte-writing_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/pickup-desert_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/two-skaters_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/delivery_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/toy-plane_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <!-- <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/boys-beach_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div> -->
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/people-jumping_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/chess_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <!-- <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/stringed-puppet_swipe.mp4"
+                      type="video/mp4">
+            </video>
+          </div> -->
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/piano-hands_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+          <div class="item">
+            <video poster="" autoplay muted loop playsinline height="100%">
+              <source src="./assets/videos/editing/teach-riding-bike_sidebyside.mp4"
+                      type="video/mp4">
+            </video>
+          </div>
+      </div>
+      
+    </div>
+    <h2 class="title has-text-centered is-size-5" style="font-weight: 400; line-height: 32px; font-style: italic; padding-top: 20px;">
+      Our omnimattes enable a wide range of video editing for users. <br>
+      (Scroll to view more videos)
+    </h2>
+  </div>
+</section>
 <br>
 <br>
 
