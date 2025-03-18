@@ -1507,8 +1507,6 @@
                   </div>
               </div>
             </div>
-            
-            <br/>
             <script>
                 activeSelfAttnMethodPill = document.querySelector('.selfattn-method-pill.active-pill');
                 activeSelfAttnScenePill = document.querySelector('.selfattn-scene-pill.active-pill');
@@ -1516,42 +1514,66 @@
             </script>
           </div>
           <div class="col-2"></div>
+        <details>
+          <summary style="text-align: center;">Expand the descriptions of visualization</summary>
+          <div class="has-text-justified  text-description">
+            <p>
+              To investigate the inherent understanding of object-effect associations in the text-to-video (T2V) Lumiere generation model,
+              we analyze its self-attention patterns during the denoising process using SDEdit.
+              We hypothesize that the T2V model possesses an intrinsic understanding of effect associations, allowing us to train an effective object-effect-removal model with a relatively small dataset.
+              <br><br>
+              We further compare the attention behaviors of the original T2V model, the Lumiere-Inpainting model, and our Casper model, which is sequentially fine-tuned from the T2V model.
+              To ensure accurate attention measurement, we do not dilate the input mask conditions for both Inpainting and Casper models.
+              <br><br>
+
+              The visualized value of each pixel indicates the strength of association between its query token and the key tokens in the target object mask region.
+              We visualize the first, middle, and final attention blocks of the U-Net architecture at the sampling step t=0.125.
+              For a detailed description of the attention visualization metric, please refer to Section 3.3 of our main paper.
+              <br><br>
+
+              We observe that the T2V model's object query tokens exhibit a strong focus on the object itself, as its primary task is to <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">generate the object and its effects</u></b>.
+              This tendency may also be present in the Inpainting model when it attempts to fill the mask region with another object to justify shadows.
+              In contrast, Casper's object query tokens show less self-attention and more attention to the background region, suggesting a focus on <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">background completion</u></b> rather than object and effect generation.
+              <br><br>
+
+              In multi-object scenarios (<u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), activeSelfAttnModePill)">boys-beach</u>,
+              <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>),
+              the T2V and Inpainting models may associate different, similar objects with the target object.
+              Our Casper model, however, demonstrates a lower attention response (darker) to similar objects, indicating a <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), document.getElementById('attn-block0'))">stronger ability to isolate individual objects</u></b>.
+              <br><br>
+              
+              We also analyzed the attention patterns of the failure case, <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>,
+              where our Casper model did not remove the corresponding shadow completely.
+              We hypothesize that the effect association is already weak in the T2V model, and our Casper model, inheriting knowledge from the pretrained models, struggles to handle such challenging cases.
+            </p>
+          </div>
+        </details>
       </div>
-      <br>
-      <div class="has-text-justified  text-description">
-        <p>
-          To investigate the inherent understanding of object-effect associations in the text-to-video (T2V) Lumiere generation model,
-          we analyze its self-attention patterns during the denoising process using SDEdit.
-          We hypothesize that the T2V model possesses an intrinsic understanding of effect associations, allowing us to train an effective object-effect-removal model with a relatively small dataset.
-          <br><br>
-          We further compare the attention behaviors of the original T2V model, the Lumiere-Inpainting model, and our Casper model, which is sequentially fine-tuned from the T2V model.
-          To ensure accurate attention measurement, we do not dilate the input mask conditions for both Inpainting and Casper models.
-          <br><br>
 
-          The visualized value of each pixel indicates the strength of association between its query token and the key tokens in the target object mask region.
-          We visualize the first, middle, and final attention blocks of the U-Net architecture at the sampling step t=0.125.
-          For a detailed description of the attention visualization metric, please refer to Section 3.3 of our main paper.
-          <br><br>
+    </div>
+  </div>
+</section>
 
-          We observe that the T2V model's object query tokens exhibit a strong focus on the object itself, as its primary task is to <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">generate the object and its effects</u></b>.
-          This tendency may also be present in the Inpainting model when it attempts to fill the mask region with another object to justify shadows.
-          In contrast, Casper's object query tokens show less self-attention and more attention to the background region, suggesting a focus on <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-car'), document.getElementById('attn-block0'))">background completion</u></b> rather than object and effect generation.
-          <br><br>
 
-          In multi-object scenarios (<u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), activeSelfAttnModePill)">boys-beach</u>,
-          <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>),
-          the T2V and Inpainting models may associate different, similar objects with the target object.
-          Our Casper model, however, demonstrates a lower attention response (darker) to similar objects, indicating a <b><u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beach'), document.getElementById('attn-block0'))">stronger ability to isolate individual objects</u></b>.
-          <br><br>
-          
-          We also analyzed the attention patterns of the failure case, <u style="cursor: pointer;" onclick="selectSelfAttnVideo(activeSelfAttnMethodPill, document.getElementById('btn-attn-beagles'), activeSelfAttnModePill)">five-beagles</u>,
-          where our Casper model did not remove the corresponding shadow completely.
-          We hypothesize that the effect association is already weak in the T2V model, and our Casper model, inheriting knowledge from the pretrained models, struggles to handle such challenging cases.
-        </p>
+<section class="section" id="sec:user-specified">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered ">
+      <div class="column">
+        <h2 class="title is-3">Acknowledgements</h2>
+        <div class="has-text-justified  text-description">
+          <p>
+            We would like to thank Daniel Geng, Charles Herrmann, Junhwa Hur, Hadi Alzayer, Deqing Sun, Daniel Vlasic, Miki Rubinstein, and Bill Freeman for their insightful discussions and generous support.
+          </p>
+          <br>
+          <p>
+            We sincerely appreciate Ray Li, Scott Wisdom, Andrei Kapishnikov, Matthew Grimes, AJ Maschinot, and Shu-Jung Han for their invaluable help in filming testing videos and contributing creative ideas.
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 <br>
 <br>
 <br>
