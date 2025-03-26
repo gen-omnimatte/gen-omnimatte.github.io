@@ -223,7 +223,7 @@
                     
                   </div>
                   <br/>
-                  <h2 class="title has-text-centered is-size-5 " style="font-weight: 400; line-height: 32px;">
+                  <h2 class="title has-text-centered is-size-5 " style="font-weight: 400; line-height: 32px;" id="tldr">
                     Our method decomposes a video into a set of RGBA omnimatte layers,<br>where each layer consists of a fully-visible object and its associated effects like shadows and reflections.
                   </h2>
                   <script>
@@ -795,14 +795,14 @@
           The trimasks specify regions to preserve (white), remove (black), and regions that potentially contain uncertain object effects (gray). In
           Stage 2, a test-time optimization reconstructs the omnimatte layers Oi from pairs of solo video and background video.</p>
       </div>
-      <div id='subsec:method-overview' class="row py-5 mt-5 bg-dark">
+      <div id='subsec-method-overview' class="row py-5 mt-5 bg-dark">
        <img src="assets/images/pipeline.svg" style="width: 100%;"/> 
       </div>
-      <div id='subsec:trimask' class="row py-5 mt-5 bg-dark">
+      <div id='subsec-trimask' class="row py-5 mt-5 bg-dark">
         <h2 class="title has-text-centered is-size-4">
           Object and Effect Removal with Trimask Condition
         </h2>
-        <div class="has-text-justified" style="width: 72%; margin-left: 14%;">
+        <div class="has-text-justified" id="p-trimask">
           <p>
             We use different trimask conditions for an input video to obtain a set of single-object (solo) videos and a clean-plate background video (bottom row).
             Note that we do not cherry pick the random seeds for the Casper model. We use the same random seed (=0) for all different input videos.

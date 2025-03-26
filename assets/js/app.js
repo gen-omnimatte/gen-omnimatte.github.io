@@ -153,7 +153,7 @@ function configure_carousel() {
             infinite: true,
             autoplay: false,
             autoplaySpeed: 3000,
-            pagination: false,
+            pagination: true,
     }
     var options_show1 = {
         slidesToScroll: 1,
@@ -162,7 +162,7 @@ function configure_carousel() {
         infinite: true,
         autoplay: false,
         autoplaySpeed: 3000,
-        pagination: false,
+        pagination: true,
 }
     // Initialize all div with carousel class
     carousel_demo = bulmaCarousel.attach('#demo-carousel', options_show3);
@@ -321,7 +321,7 @@ function selectDemoVideo(methodPill, scenePill, modePill) {
     // console.log("videos/results/" + mode + "/" + pill + ".mp4");
     video_active.load();
 
-    autoScroll(pill.split('_')[0]);
+    // autoScroll(pill.split('_')[0]);
 }
 
 
