@@ -327,6 +327,10 @@ p {
 #sec-sidebyside-edit {
   display: block;
 }
+#p-trimask {
+  width: 72%;
+  margin-left: 14%;
+}
 
 /* Medium devices (tablets, 768px and up)*/
 @media screen and (max-width: 768px) {
@@ -381,6 +385,23 @@ p {
     width: 90%;
     margin-left: 5%;
   }
+  .tldr {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  #subsec-method-overview {
+    margin-left: 5%;
+    margin-right: 5%;
+  }
+  #subsec-trimask, #p-failure-desc {
+    margin-left: 8%;
+    margin-right: 8%;
+  }
+  #p-trimask {
+    width: 100%;
+    margin: 0%;
+  }
+  
 }
 
 /* Medium devices (tablets, 768px and up)*/
